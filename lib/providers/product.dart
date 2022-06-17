@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class Product with ChangeNotifier{
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../models/http_exception.dart';
+
+class Product with ChangeNotifier {
   final String id;
   final String title;
   final String description;
@@ -8,17 +12,34 @@ class Product with ChangeNotifier{
   final String imageUrl;
   bool isFavorite;
 
-  void toggleFavoriteStatus() {
+  Future<void> toggleFavoriteStatus() async {
+    final url = Uri.parse(
+        'https://flutter-shop-f66be-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json');
+
     isFavorite = !isFavorite;
     notifyListeners();
+
+    try {
+      final response = await http.patch(url,
+          body: jsonEncode({
+            'isFavorite': isFavorite,
+          }));
+
+      if(response.statusCode >= 400) {
+        isFavorite = !isFavorite;
+        notifyListeners();
+        throw HttpException('Failed update product.');
+      }
+    } catch (err) {
+      throw HttpException('Failed update product.');
+    }
   }
 
-  Product({
-      required this.id,
+  Product(
+      {required this.id,
       required this.title,
       required this.description,
       required this.price,
       required this.imageUrl,
-      this.isFavorite = false
-  });
+      this.isFavorite = false});
 }
