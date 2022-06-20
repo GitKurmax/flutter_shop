@@ -12,18 +12,16 @@ class Product with ChangeNotifier {
   final String imageUrl;
   bool isFavorite;
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String? authToken, String? userId) async {
     final url = Uri.parse(
-        'https://flutter-shop-f66be-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json');
+        'https://flutter-shop-f66be-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId/$id.json?auth=$authToken');
 
     isFavorite = !isFavorite;
     notifyListeners();
 
     try {
-      final response = await http.patch(url,
-          body: jsonEncode({
-            'isFavorite': isFavorite,
-          }));
+      final response = await http.put(url,
+          body: jsonEncode(isFavorite));
 
       if(response.statusCode >= 400) {
         isFavorite = !isFavorite;

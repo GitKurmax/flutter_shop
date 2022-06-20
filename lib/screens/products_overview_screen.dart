@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/widgets/badge.dart';
 
 import '../providers/cart.dart';
-import '../providers/product.dart';
 import '../providers/products.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/products_grid.dart';
@@ -51,7 +50,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   }
                 });
               },
-              itemBuilder: (_) => [
+              itemBuilder: (_) => const [
                 PopupMenuItem(
                   child: Text('Only Favorites'),
                   value: FilterOptions.Favorites,

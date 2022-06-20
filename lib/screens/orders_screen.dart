@@ -17,6 +17,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   void initState() {
     // One way to fetch from server on init screen
+
     // Future.delayed(Duration.zero).then((_) async {
     //   setState(() {
     //     _isLoading = true;
